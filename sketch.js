@@ -1,45 +1,74 @@
-var car,wall;
-var speed,weight;
+var bullet,speed,weight;
+var wall,thickness;
 
 
 function setup() {
   createCanvas(1600,400);
 
-  speed=random(55,90);
-  weight=random(400,1500);
+  speed=random(223,321);
+  weight=random(30,52);
 
-  car=createsprite(50,200,50,50);
-  wall=createSprite(1500,200,60,height/2);
+  bullet=createSprite(50,200,50,50);
+  wall=createSprite(1200,200,thickness,height/2);
 
+  bullet.velocityX = speed;
+
+  thickness=random(22,83);
 
 }
 
 function draw() {
   background(255,255,255);  
   
-  car.velocityX = speed;
-
-  if(wall.x-car.x<(car.width+wall.width)/2)
+  
+  if(wall.x-bullet.x<(bullet.width+wall.width)/2)
   {
-    car.velocityX=0;
+    bullet.velocityX=0;
     var deformation=.5 * weight * speed/22509;
     if(deformation>180)
     {
-      car.shapeColor=color(255,0,0);
+      bullet.shapeColor=color("white");
     }
 
     if(deformation<180 && deformation>100)
     {
-      car.shapeColor=color(230,230,0);
+      bullet.shapeColor=color(230,230,0);
     }
 
     if(deformation<100)
     {
-      car.shapeColor=color(0,255,0);
+      bullet.shapeColor=color(0,255,0);
     }
   }
   
   
   
   drawSprites();
+}
+
+function hasCollided(bullet,wall)
+{  
+  bullet = bulletRightEdge = bullet.x + bullet.width;
+  wallLeftEdge = wall.x;
+  if (bulletRightEdge>=wallLeftEdge)
+  {
+    return true;
+  }
+  return false;
+  
+  if (hasCollided(bullet,wall))
+  bullet.velocityX=0;
+  var damage = .5 * weight * speed * speed/(thickness * thickness * thickness);
+
+  if(damage>10)
+  {
+    wall.shapeColor = color(255,0,0);
+  }
+
+
+  if(damage>10)
+  {
+    wall.shapeColor=color(0,255,0);
+  }
+
 }
